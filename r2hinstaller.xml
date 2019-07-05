@@ -7,13 +7,13 @@
 
 	<name>PLG_SYSTEM_R2HINSTALLER</name>
 	<version>1.0.0</version>
-	<creationDate>17-12-2018</creationDate>
+	<creationDate>17-12-2019</creationDate>
 
 	<author>R2H Marketing &amp; Internet Solutions</author>
 	<authorEmail>info@r2h.nl</authorEmail>
 	<authorUrl>https://r2h.nl/</authorUrl>
 
-	<copyright>Copyright (c) R2H 2018. All rights reserved.</copyright>
+	<copyright>Copyright (c) R2H 2019. All rights reserved.</copyright>
 	<license>GNU/GPLv3</license>
 	<description>PLG_SYSTEM_R2HINSTALLER_DESC</description>
 

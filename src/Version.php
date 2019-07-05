@@ -1,9 +1,11 @@
 <?php
+declare(strict_types = 1);
+
 /**
  * R2H Installer Plugin
- * @author      Michael Snoeren <michael@r2h.nl>
- * @copyright   R2H Marketing & Internet Solutions © 2018
- * @license     GNU/GPLv3
+ * @author    Michael Snoeren <michael@r2h.nl>
+ * @copyright R2H Marketing & Internet Solutions © 2019
+ * @license   GNU/GPLv3
  */
 
 namespace R2HInstaller;
@@ -17,22 +19,25 @@ defined('_JEXEC') or die;
 abstract class Version
 {
     /**
-     * @var     string $phpVersion The minimal PHP version.
-     * @access  protected
+     * @var    string $phpVersion The minimal PHP version.
+     * @access protected
+     * @static
      */
-    protected static $phpVersion = '7.0.0';
+    protected static $phpVersion = '7.1.0';
 
     /**
-     * @var     string $joomlaVersion The minimal Joomla! version.
-     * @access  protected
+     * @var    string $joomlaVersion The minimal Joomla! version.
+     * @access protected
+     * @static
      */
-    protected static $joomlaVersion = '3.8.0';
+    protected static $joomlaVersion = '3.8.5';
 
     /**
      * Perform all version checks.
-     * @access  public
-     * @return  boolean
-     * @throws  InvalidVersionException Thrown when a version validation failed.
+     * @access public
+     * @return boolean
+     * @throws \R2HInstaller\Exceptions\InvalidVersionException Thrown when a version validation failed.
+     * @static
      */
     public static function checkAll(): bool
     {
@@ -40,7 +45,7 @@ abstract class Version
             throw new InvalidVersionException(
                 Text::sprintf(
                     'PLG_SYSTEM_R2HINSTALLER_ERROR_VERSION_PHP',
-                    self::$phpVersion,
+                    '<strong>' . self::$phpVersion . '</strong>',
                     PHP_VERSION
                 )
             );
@@ -51,7 +56,7 @@ abstract class Version
             throw new InvalidVersionException(
                 Text::sprintf(
                     'PLG_SYSTEM_R2HINSTALLER_ERROR_VERSION_JOOMLA',
-                    self::$joomlaVersion,
+                    '<strong>' . self::$joomlaVersion . '</strong>',
                     $version->getShortVersion()
                 )
             );
@@ -62,8 +67,9 @@ abstract class Version
 
     /**
      * Check the PHP version.
-     * @access  public
-     * @return  boolean
+     * @access public
+     * @return boolean
+     * @static
      */
     public static function checkPhpVersion(): bool
     {
@@ -72,8 +78,9 @@ abstract class Version
 
     /**
      * Check the Joomla! version.
-     * @access  public
-     * @return  boolean
+     * @access public
+     * @return boolean
+     * @static
      */
     public static function checkJoomlaVersion(): bool
     {

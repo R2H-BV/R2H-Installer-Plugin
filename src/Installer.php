@@ -1,9 +1,11 @@
 <?php
+declare(strict_types = 1);
+
 /**
  * R2H Installer Plugin
- * @author      Michael Snoeren <michael@r2h.nl>
- * @copyright   R2H Marketing & Internet Solutions © 2018
- * @license     GNU/GPLv3
+ * @author    Michael Snoeren <michael@r2h.nl>
+ * @copyright R2H Marketing & Internet Solutions © 2019
+ * @license   GNU/GPLv3
  */
 
 namespace R2HInstaller;
@@ -16,17 +18,19 @@ defined('_JEXEC') or die;
 abstract class Installer
 {
     /**
-     * @var     string $path The basepath to all packages.
-     * @access  protected
+     * @var    string $path The basepath to all packages.
+     * @access protected
+     * @static
      */
     protected static $path = '';
 
     /**
      * Set the path to all packages.
-     * @param   string $path The path.
-     * @access  public
-     * @return  boolean
-     * @throws  \InvalidArgumentException Thrown on empty path.
+     * @param  string $path The path.
+     * @access public
+     * @return boolean
+     * @throws \InvalidArgumentException Thrown on empty path.
+     * @static
      */
     public static function setPath(string $path): bool
     {
@@ -41,10 +45,11 @@ abstract class Installer
 
     /**
      * Install a package from the packages folder.
-     * @param   string $name The folder name containing the package.
-     * @access  public
-     * @return  boolean
-     * @throws  \InvalidArgumentException Thrown on empty package name.
+     * @param  string $name The folder name containing the package.
+     * @access public
+     * @return boolean
+     * @throws \InvalidArgumentException Thrown on empty package name.
+     * @static
      */
     public static function installPackage(string $name): bool
     {
@@ -63,7 +68,7 @@ abstract class Installer
                 Text::sprintf(
                     'PLG_SYSTEM_R2HINSTALLER_ERROR_INSTALLER_FAILED',
                     $dir
-                ) . 'Doesnt exist.',
+                ),
                 'error'
             );
             return false;
@@ -114,9 +119,10 @@ abstract class Installer
 
     /**
      * Install all packages from the basepath.
-     * @access  public
-     * @return  boolean
-     * @throws  \UnexpectedValueException Thrown when the base path is empty.
+     * @access public
+     * @return boolean
+     * @throws \UnexpectedValueException Thrown when the base path is empty.
+     * @static
      */
     public static function installPackages(): bool
     {
@@ -138,14 +144,15 @@ abstract class Installer
 
     /**
      * Uninstall the installer.
-     * @access  public
-     * @return  boolean
+     * @access public
+     * @return boolean
+     * @static
      */
     public static function uninstallInstaller(): bool
     {
         $pluginPath = JPATH_SITE . '/plugins/system/r2hinstaller/';
         if (!\JFolder::exists($pluginPath)) {
-            return true;
+            return self::uninstallInstallerFromDatabase();
         }
 
         // Remove all files and folders from the plugin directory.
@@ -173,8 +180,9 @@ abstract class Installer
 
     /**
      * Uninstall the installer from the database.
-     * @access  protected
-     * @return  boolean
+     * @access protected
+     * @return boolean
+     * @static
      */
     protected static function uninstallInstallerFromDatabase(): bool
     {

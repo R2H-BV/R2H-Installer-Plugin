@@ -1,36 +1,38 @@
 <?php
+declare(strict_types = 1);
+
 /**
  * R2H Installer Plugin
- * @author      Michael Snoeren <michael@r2h.nl>
- * @copyright   R2H Marketing & Internet Solutions © 2018
- * @license     GNU/GPLv3
+ * @author    Michael Snoeren <michael@r2h.nl>
+ * @copyright R2H Marketing & Internet Solutions © 2019
+ * @license   GNU/GPLv3
  */
 
 use Joomla\CMS\Factory;
-use R2HInstaller\Exceptions\InvalidVersionException;
 use R2HInstaller\Version;
 use R2HInstaller\Installer;
+use R2HInstaller\Exceptions\InvalidVersionException;
 
 defined('_JEXEC') or die;
 
 class PlgSystemR2HInstallerInstallerScript
 {
     /**
-     * @var     Joomla\CMS\Application\SiteApplication $app The application object.
-     * @access  protected
+     * @var    Joomla\CMS\Application\SiteApplication $app The application object.
+     * @access protected
      */
-    protected $app = null;
+    protected $app;
 
     /**
-     * @var     boolean $canInstall Determines if packages should be installed.
-     * @access  protected
+     * @var    boolean $canInstall Determines if packages should be installed.
+     * @access protected
      */
     protected $canInstall = true;
 
     /**
      * Installer preflight.
-     * @access  public
-     * @return  void
+     * @access public
+     * @return void
      */
     public function preflight()
     {
@@ -55,16 +57,18 @@ class PlgSystemR2HInstallerInstallerScript
 
     /**
      * Installer postflight.
-     * @param   string $route The name of the installer route.
-     * @access  public
-     * @return  boolean
-     * @throws  Exception Thrown when an installation step fails.
+     * @param  string $route The name of the installer route.
+     * @access public
+     * @return boolean
+     * @throws Exception Thrown when an installation step fails.
      */
     public function postflight(string $route)
     {
         if (!$this->canInstall) {
             return false;
         }
+
+        $status = false;
 
         try {
             if (!in_array(strtolower($route), ['install', 'update'])) {
@@ -80,14 +84,14 @@ class PlgSystemR2HInstallerInstallerScript
             if (!Installer::installPackages()) {
                 throw new Exception('Failed to install all packages.');
             }
+
+            $status = true;
         } catch (Exception $e) {
             $this->app->enqueueMessage('R2H Installer: ' . $e->getMessage(), 'warning');
-
+        } finally {
             Installer::uninstallInstaller();
-            return false;
         }
 
-        Installer::uninstallInstaller();
-        return true;
+        return $status;
     }
 }
